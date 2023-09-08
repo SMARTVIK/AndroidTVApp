@@ -14,4 +14,9 @@
     <string name="error_fragment_message">An error occurred</string>
     <string name="dismiss_error">Dismiss</string>
     <string name="oops">Oops</string>
+    <string name="actual">Actual</string>
+    <string name="target">Target</string>
+    <string name="sku_code">SKU Code</string>
+    <string name="assembly_line">Assembly Line</string>
+    <string name="line_status">Line Status</string>
 </resources>
