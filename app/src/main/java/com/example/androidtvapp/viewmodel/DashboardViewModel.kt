@@ -1,6 +1,7 @@
 package com.example.androidtvapp.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -21,14 +22,16 @@ class DashboardViewModel(
     private val _dashboardData: MutableLiveData<Resource<List<DashBoardDataResponseItem>?>> = MutableLiveData()
     val dashboardData: MutableLiveData<Resource<List<DashBoardDataResponseItem>?>> = _dashboardData
 
-    fun getDashboardData(
-    ) {
+    fun getDashboardData(showLoader: Boolean) {
         viewModelScope.launch {
-            getDashboardCountData()
+            Log.d("ViewModel", "getDashboardData: ")
+            getDashboardCountData(showLoader)
         }
     }
-    private suspend fun getDashboardCountData(baseUrl: String = Constants.BASE_URL) {
-        _dashboardData.postValue(Resource.Loading())
+    private suspend fun getDashboardCountData(showLoader: Boolean = false , baseUrl: String = Constants.BASE_URL) {
+        if(showLoader) {
+            _dashboardData.postValue(Resource.Loading())
+        }
         try {
             if (Utils.hasInternetConnection(getApplication())) {
                 val response = ledRepository.getDashboardData(baseUrl)

@@ -17,15 +17,19 @@ import androidx.fragment.app.Fragment
 import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.androidtvapp.Constants
 import com.example.androidtvapp.R
 import com.example.androidtvapp.model.DashBoardDataResponseItem
 import com.example.androidtvapp.network.Resource
 import com.example.androidtvapp.repository.LEDRepository
 import com.example.androidtvapp.viewmodel.DashboardViewModel
 import com.example.androidtvapp.viewmodel.DashboardViewModelFactory
+import java.util.Timer
+import java.util.TimerTask
 
 class LEDFragment : Fragment() {
 
+    private val timer: Timer = Timer()
     private var dialog: Dialog ? = null
     private lateinit var recyclerView: VerticalGridView
     private lateinit var adapter: ListAdapter
@@ -45,7 +49,12 @@ class LEDFragment : Fragment() {
         val repo = LEDRepository()
         val viewModelFactory = DashboardViewModelFactory(requireActivity().application, repo)
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[DashboardViewModel::class.java]
-        viewModel.getDashboardData()
+        viewModel.getDashboardData(showLoader = true)
+        timer.scheduleAtFixedRate( object : TimerTask() {
+            override fun run() {
+                viewModel.getDashboardData(showLoader = false)
+            }
+        }, 0, Constants.TIME_FOR_API)
         viewModel.dashboardData.observe(viewLifecycleOwner) {response->
             when (response) {
                 is Resource.Success -> {
@@ -78,6 +87,11 @@ class LEDFragment : Fragment() {
         recyclerView.adapter = adapter
         val layoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = layoutManager
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer.cancel()
     }
 
     private fun showLoadingDialog(context: Context, message: String) : Dialog? {
