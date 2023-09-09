@@ -4,7 +4,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.androidtvapp.Constants
 import com.example.androidtvapp.Constants.INACTIVE
 import com.example.androidtvapp.R
 import com.example.androidtvapp.model.DashBoardDataResponseItem
@@ -52,16 +51,16 @@ class ListAdapter(private val data: List<DashBoardDataResponseItem>?) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
             val model = data?.get(position - 1)
-            if (model?.isActive == INACTIVE) {
+            if (model?.lineStatus == INACTIVE) {
                 holder.rootLayout.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.inactive_item_background))
             } else {
                 holder.rootLayout.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.normal_item_background))
             }
-            holder.assembly.text = model?.displayName
-            holder.actual.text = model?.skuCount
+            holder.assembly.text = model?.assemblyLine
+            holder.actual.text = model?.actual
             holder.skuCode.text = model?.skuCode
             holder.target.text = model?.target
-            holder.line.text = model?.isActive
+            holder.line.text = model?.lineStatus
         }
     }
 

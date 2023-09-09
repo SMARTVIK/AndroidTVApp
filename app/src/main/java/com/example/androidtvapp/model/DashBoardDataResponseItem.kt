@@ -1,10 +1,10 @@
 package com.example.androidtvapp.model
 
 data class DashBoardDataResponseItem(
-    val displayName: String,
-    val isActive: String,
+    val assemblyLine: String,
+    val lineStatus: String,
     val skuCode: String,
-    val skuCount: String,
+    val actual: String,
     val target: String,
     val totalCount: Int
 )
